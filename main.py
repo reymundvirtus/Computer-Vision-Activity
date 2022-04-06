@@ -1,18 +1,16 @@
-import numpy as np
 import cv2 as cv
 
-img = np.zeros((512, 512, 3), np.uint8) # Create a black image
+image = cv.imread('motor.jpg') # Read original image
 
-cv.ellipse(img, (300, 400), (100, 100), 0, 0, 180, 255, -1) # create a semicirlce
+grayscale = cv.cvtColor(image, cv.COLOR_BGR2GRAY)  # Convert to grayscale
 
-cv.line(img, (0, 0), (511, 511), (255, 255, 0), 5) # create diagonal line
+blackAndWhiteImage = cv.threshold(grayscale, 90, 255, cv.THRESH_BINARY)[1] # Convert grayscale image to black and white
 
-cv.rectangle(img, (300, 0), (510, 128), (255, 0, 255), -1) # create a rectangle
+blackAndWhiteImageCopy = cv.threshold(image, 127, 255, cv.THRESH_BINARY)[1] # Convert original image to black and white
+negativeImage = cv.bitwise_not(blackAndWhiteImageCopy) # Invert black and white image to negative image
 
-cv.circle(img, (200, 100), 63, (60, 250, 200), -1) # create a circle
-
-font = cv.FONT_HERSHEY_SIMPLEX
-cv.putText(img, 'Reymund', (40, 290), font, 3, (255, 255, 255), 2, cv.LINE_AA) # put text in middle
-
-cv.imshow("Display window", img) # display image
+cv.imshow('Original Image', image) # Show original image
+cv.imshow('Gray Image', grayscale) # Show gray image
+cv.imshow('Inverted Image', blackAndWhiteImage) # Show inverted image
+cv.imshow('Negative Image', negativeImage) # Show negative image
 k = cv.waitKey(0) # wait for key to be pressed

@@ -1,2 +1,2 @@
 # Computer-Vision-Activity
-Python Exercise 16 (PE16) Draw using Python and OpenCV on Computer Vision Subject Using the OpenCV Library
+Python Exercise 17 (PE17) Create a python program that will convert an image to three different color scheme (Grayscale, Inverted, Black & White) on Computer Vision Subject Using the OpenCV Library
