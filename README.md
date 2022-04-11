@@ -8,5 +8,7 @@ Filename: PE17_Lastname.TXT & PE17_JPG_Lastname.JPG
 - Inverted
 - Black & White
 
+> Note: Use a different photo than the one in the result.
+
 ###### Output:
 ![PE17_Virtus](https://user-images.githubusercontent.com/83077353/161914764-b6bc54f2-f013-4691-a3b4-0e75fd8e2a58.jpg)
