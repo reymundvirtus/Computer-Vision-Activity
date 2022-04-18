@@ -21,6 +21,4 @@ for i in range(4):
     plt.xticks([]) # remove the x axis
     plt.yticks([]) # remove the y axis
 
-cv.imshow("scrat", thres1)
-cv.waitKey(0)
 plt.show()
