@@ -1,24 +1,28 @@
 import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
 
-image = cv.imread('motor.jpg', 0) # Read original image
+GREEN = [0,255,0] # color of border
+image = cv.imread('google.png') # read the image
+image1 = cv.imread('google.png', 0) # read the image and transform it to grayscale to get the shape
+rows, cols = image1.shape
 
-rows, cols = image.shape
+rotate90 = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 90, 1) # rotate to 90 degree
+dst90 = cv.warpAffine(image, rotate90, (cols, rows))
 
-# cols-1 and rows-1 are the coordinate limits.
-fortyFive = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 45, 0.9) # adjusted to 0.9 to fit the image in window
-dst45 = cv.warpAffine(image, fortyFive, (cols, rows))
+original = cv.copyMakeBorder(dst90, 10, 10, 10, 10, cv.BORDER_REPLICATE) # Replicate image
+replicate = cv.copyMakeBorder(dst90, 10, 10, 10, 10, cv.BORDER_REPLICATE) # Replicate image
+reflect = cv.copyMakeBorder(dst90, 30, 30, 30, 30, cv.BORDER_REFLECT) # Reflect image
+reflect101 = cv.copyMakeBorder(dst90, 30, 30, 30, 30, cv.BORDER_REFLECT_101) # Reflect 101 image
+wrap = cv.copyMakeBorder(dst90, 30, 30, 30, 30, cv.BORDER_WRAP) # Wrap image
+constant = cv.copyMakeBorder(dst90, 30, 30, 30, 30, cv.BORDER_CONSTANT, value = GREEN) # Constant image that has border green
 
-oneEighty = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 180, 1)
-dst180 = cv.warpAffine(image, oneEighty, (cols, rows))
+titles = ['ORIGINAL', 'REPLICATE', 'REFLECT', 'REFLECT_101', 'WRAP', 'CONSTANT'] # name of titles
+images = [original, replicate, reflect, reflect101, wrap, constant] # name of images
 
-ninety = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 90, 0.7) # adjusted to 0.7 to fit the image in window
-dst90 = cv.warpAffine(image, ninety, (cols, rows))
+for i in range(len(images)): # iterate the length of images, you can also use the length of titles array
+	plt.subplot(2, 3, i + 1) # subplot images by 2 rows and 3 cols
+	plt.imshow(images[i], 'gray') # iterate images
+	plt.title(titles[i]) # iterate titles
 
-twoSeventy = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 270, 0.7) # adjusted to 0.7 to fit the image in window
-dst270 = cv.warpAffine(image, twoSeventy, (cols, rows))
-
-cv.imshow('45', dst45) # Show 45 degree image
-cv.imshow('180', dst180) # Show 180 degree image
-cv.imshow('90', dst90) # Show 90 degree image
-cv.imshow('270', dst270) # Show 270 degree image
-k = cv.waitKey(0) # wait for key to be pressed
+plt.show() # show the figure
