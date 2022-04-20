@@ -1,24 +1,14 @@
 import cv2 as cv
 
-image = cv.imread('motor.jpg', 0) # Read original image
+image = cv.imread('motor.jpg') # original image
+gray_image = cv.imread('motor_gray.jpg') # grayscale image
 
-rows, cols = image.shape
+negativeImage = cv.bitwise_not(image) # invert original image to negative image
 
-# cols-1 and rows-1 are the coordinate limits.
-fortyFive = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 45, 0.9) # adjusted to 0.9 to fit the image in window
-dst45 = cv.warpAffine(image, fortyFive, (cols, rows))
+# blend the grayscale and negative image
+blendImage = cv.addWeighted(gray_image, 1, negativeImage, 0.4, 0)
 
-oneEighty = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 180, 1)
-dst180 = cv.warpAffine(image, oneEighty, (cols, rows))
-
-ninety = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 90, 0.7) # adjusted to 0.7 to fit the image in window
-dst90 = cv.warpAffine(image, ninety, (cols, rows))
-
-twoSeventy = cv.getRotationMatrix2D(((cols - 1) / 2.0, (rows - 1) / 2.0), 270, 0.7) # adjusted to 0.7 to fit the image in window
-dst270 = cv.warpAffine(image, twoSeventy, (cols, rows))
-
-cv.imshow('45', dst45) # Show 45 degree image
-cv.imshow('180', dst180) # Show 180 degree image
-cv.imshow('90', dst90) # Show 90 degree image
-cv.imshow('270', dst270) # Show 270 degree image
-k = cv.waitKey(0) # wait for key to be pressed
+# cv.imshow('original', image) # show original image
+cv.imshow('output', blendImage) # show the blended image
+cv.imshow('gray', gray_image)
+cv.waitKey(0) # wait for key to be pressed
