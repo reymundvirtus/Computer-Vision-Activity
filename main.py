@@ -2,23 +2,22 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
-image = cv.imread('passport.jpg', 0) # read the original image and set to grayscale
-img = cv.medianBlur(image, 5) # blurred the image a little
+image = cv.imread('mcdo.png', 0) # read the original image and set to grayscale
 
-ret, thres1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY) # Global Thresholding (v = 127)
-thres2 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_MEAN_C, \
-            cv.THRESH_BINARY, 11, 2) # Adaptive Mean Thresholding
-thres3 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, \
-            cv.THRESH_BINARY, 11, 2) # Adaptive Gaussian Thresholding
-titles = ['Original Image (Grayscale)', 'Global Thresholding (v = 127)',
-            'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding'] # array of titles
-images = [image, thres1, thres2, thres3] # array of images
+kernel = np.ones((5, 5), np.uint8)
+erosion = cv.erode(image, kernel, iterations = 1)
+dilation = cv.dilate(image, kernel, iterations = 1)
+opening = cv.morphologyEx(image, cv.MORPH_OPEN, kernel)
+closing = cv.morphologyEx(image, cv.MORPH_CLOSE, kernel)
+gradient = cv.morphologyEx(image, cv.MORPH_GRADIENT, kernel)
+tophat = cv.morphologyEx(image, cv.MORPH_TOPHAT, kernel)
+blackhat = cv.morphologyEx(image, cv.MORPH_BLACKHAT, kernel)
 
-for i in range(4):
-    plt.subplot(2, 2, i + 1)
-    plt.imshow(images[i], 'gray') # iterate images
-    plt.title(titles[i]) # iterate titles
-    plt.xticks([]) # remove the x axis
-    plt.yticks([]) # remove the y axis
-
-plt.show()
+cv.imshow("Erosion", erosion)
+cv.imshow("Dilation", dilation)
+cv.imshow("Opening", opening)
+cv.imshow("Closing", closing)
+cv.imshow("Gradient", gradient)
+cv.imshow("TopHat", tophat)
+cv.imshow("BlackHat", blackhat)
+cv.waitKey(0)
