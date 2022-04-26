@@ -9,6 +9,8 @@ If you want to create a border around an image, something like a photo frame, yo
 4. cv.BORDER_REPLICATE
 5. cv.BORDER_WRAP
 
+Filename: PE21_Lastname.txt, PE21_JPG_Lastname.jpg
+
 > Note: Use a different photo than the one in the result.
 
 ###### Output:
