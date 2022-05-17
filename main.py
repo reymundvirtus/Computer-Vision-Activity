@@ -2,8 +2,8 @@ import cv2 as cv
 import numpy as np
 
 # original image
-image = cv.imread('itachi.jpg')
-cv.imshow('Original', image)
+image = cv.imread('itachi.jpg') # read image
+cv.imshow('Original', image) # show original image
 
 mask = np.zeros(image.shape[:2], dtype = np.uint8)
 cv.circle(mask, (310, 280), 65, 255, -1) # left eye
