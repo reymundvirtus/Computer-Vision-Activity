@@ -1,37 +1,18 @@
 import cv2 as cv
 import numpy as np
-import matplotlib.pyplot as plt
 
 # original image
-image = cv.imread('motor.jpg') # read image
-cv.imshow('Original', image) # show original image
+image = cv.imread('coins.jpg') # read image
 
-def histogram(image):
-    grayscale = cv.cvtColor(image, cv.COLOR_BGR2GRAY) # convert to grayscale
-    cv.imshow('Grayscale', grayscale) # show grayscale image
-    hist = cv.calcHist([grayscale], [0], None, [256], [0, 256]) # calculate histogram
-    plt.figure()
-    plt.title('Grayscale Histogram')
-    plt.xlabel('Bins')
-    plt.ylabel('no. of Pixels')
-    plt.plot(hist)
-    plt.xlim([0, 256])
-    plt.show()
+gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY) # convert to gray
+ret, thresh = cv.threshold(gray_image, 200, 255, cv.THRESH_BINARY) # threshold
 
-def flatten(image):
-    chans = cv.split(image) # split image into channels
-    colors = ("b", "g", "r") # color names
-    plt.figure()
-    plt.title("Flattened Color Histogram")
-    plt.xlabel("Bins")
-    plt.ylabel("no. of Pixels")
-    for (chan, color) in zip(chans, colors):
-        hist = cv.calcHist([chan], [0], None, [256], [0, 256])
-        plt.plot(hist, color = color)
-        plt.xlim([0, 256])
-    plt.show()
+# CHAIN_APPROX_SIMPLE: only the boundary points are stored
+contours, hierarchy = cv.findContours(thresh, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE, offset=(0, 0))
+image_copy = image.copy()
+cv.drawContours(image = image_copy, contours = contours, contourIdx = -1, color = (0, 255, 0), thickness = 2, lineType = cv.LINE_AA)
 
-histogram(image)
-flatten(image)
+cv.imshow('Simple Approximation', image_copy) # show simple approximation image
+# cv.imshow('Binary image', thresh) # show binary image
 cv.waitKey(0)
 cv.destroyAllWindows()
